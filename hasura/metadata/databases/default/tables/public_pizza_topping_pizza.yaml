@@ -1,0 +1,3 @@
+table:
+  name: pizza_topping_pizza
+  schema: public
