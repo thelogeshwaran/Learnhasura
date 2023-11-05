@@ -3,42 +3,35 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import { client } from "../utils/client";
 
 type Data = {
   friends: Record<string, string>;
 };
 
+const QUERY = `query {
+  friend {
+    name
+  }
+}`;
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let friends;
-
-  try {
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT as string,
-      {
-        method: "POST",
-        headers: {
-          "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET as string,
-        },
-        body: JSON.stringify({
-          query: `query {
-          friend {
-            name
-          }
-        }`,
-        }),
-      }
-    );
-
-    const result = await response.json();
-
-    friends = result.data.friend;
-  } catch (e) {
-    console.log(e);
-  }
-
-  return {
-    props: { friends },
-  };
+  console.log("came");
+  return client
+    .query(QUERY)
+    .toPromise()
+    .then((d) => {
+      console.log(d);
+      return {
+        props: { friends: d?.data?.friend },
+      };
+    })
+    .catch((e) => {
+      return {
+        props: {},
+      };
+    });
 };
 
 const Home: NextPage = ({
@@ -53,23 +46,10 @@ const Home: NextPage = ({
       </Head>
 
       <main className={styles.main}>
-        {friends.map((item: any) => (
+        {friends?.map((item: any) => (
           <div key={item.id}>{item?.name}</div>
         ))}
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   );
 };

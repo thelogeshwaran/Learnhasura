@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "graphql": "^16.8.1",
+    "graphql-ws": "^5.14.2",
     "next": "14.0.1",
+    "next-urql": "^3.3.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "urql": "^2.2.2"
   },
   "devDependencies": {
     "@types/node": "20.8.10",
