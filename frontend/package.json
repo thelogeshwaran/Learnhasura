@@ -10,9 +10,11 @@
     "codegen": "graphql-codegen -r dotenv/config --config codegen.yml dotenv_config_path=./.env.local"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.5",
     "daisyui": "^3.9.4",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.2",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.0.1",
     "next-themes": "0.2.0",
     "next-urql": "^3.3.3",
